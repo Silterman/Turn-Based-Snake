@@ -1,5 +1,4 @@
 import random
-from pprint import pprint
 
 #to do
 # make it clear where the head of the snake is
@@ -28,6 +27,9 @@ class snake:
         if game.grid[(self.body[0][0]+self.curDir[0])%game.size][(self.body[0][1]+self.curDir[1])%game.size] == 2:
             aCollision = self.body[-1]
             self.score += 1
+            if self.score == game.size**2-1:
+                print("You won! You covered the entire field with Snek. Score:", player.score)
+                quit()
         game.grid[self.body[-1][0]%game.size][self.body[-1][1]%game.size] = 0 #setting tail on grid to 0 -> need to do it now while we still know coods
         for i in range(1, len(self.body)): #moving body one by one starting at the tail like a linked list
             self.body[-i] = self.body[-i-1]
@@ -58,13 +60,21 @@ class gameGrid:
         self.grid[snake.body[0][0]%self.size][snake.body[0][1]%self.size] = 9
         for xy in snake.body[1:]:
             self.grid[xy[0]%self.size][xy[1]%self.size] = 1
-
-size = int(input("What size do you want to play with? Uneven integers only."))
+try:
+    print("How big do you want the arena to be? An even integer will result in the starting position to not be centered.")
+    print("Please enter any number bigger than 0.")
+    size = int(input())
+    if size <= 0:
+        raise Exception("Invalid")
+except (ValueError, Exception):
+    print("Invalid field size. Quitting.")
+    quit()
 
 player = snake(size)
 game = gameGrid(size, player)
 
-pprint(game.grid)
+for line in game.grid:
+    print(line)
 
 while True:
     inp = str(input("What direction?")).lower()
@@ -75,4 +85,5 @@ while True:
         print("Quitting. Your score is", str(player.score)+".")
         quit()
     player.inputDetector(inp, game)
-    pprint(game.grid)
+    for line in game.grid:
+        print(line)
