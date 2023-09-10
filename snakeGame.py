@@ -7,7 +7,7 @@ from pprint import pprint
 class snake:
     def __init__(self, size):
         self.body = [(int((size-1)/2),int((size-1)/2))]
-        self.curDir = None
+        self.curDir = [0,0]
         self.score = 0
     def inputDetector(self, inp, game):
         turnTranslate = {"up": [-1, 0], "down": [1, 0], "left": [0, -1], "right":[0, 1]}
@@ -28,7 +28,6 @@ class snake:
         if game.grid[(self.body[0][0]+self.curDir[0])%game.size][(self.body[0][1]+self.curDir[1])%game.size] == 2:
             aCollision = self.body[-1]
             self.score += 1
-            game.generateApple(self)
         game.grid[self.body[-1][0]%game.size][self.body[-1][1]%game.size] = 0 #setting tail on grid to 0 -> need to do it now while we still know coods
         for i in range(1, len(self.body)): #moving body one by one starting at the tail like a linked list
             self.body[-i] = self.body[-i-1]
@@ -36,9 +35,9 @@ class snake:
         if aCollision:
             self.body.append(aCollision)
         game.updateGrid(self)
+        if aCollision: #need to do this after moving the snake, otherwise there is a chance the movement replaces the new apple.
+            game.generateApple(self)
     def validTurn(self, inp) -> bool: #only checks if you do a uturn
-        if self.curDir is None:
-            return True
         if self.curDir[0]+inp[0] == 0 and self.curDir[1]+inp[1] == 0:
             return False
         return True
@@ -69,10 +68,11 @@ pprint(game.grid)
 
 while True:
     inp = str(input("What direction?")).lower()
-    if inp == "":
-        print("Empty input detected, try again.")
+    if inp not in ["up", "down", "right", "left", "q"]:
+        print("Incorrect input detected, try again.")
         continue
     if inp == "q":
+        print("Quitting. Your score is", str(player.score)+".")
         quit()
     player.inputDetector(inp, game)
     pprint(game.grid)
