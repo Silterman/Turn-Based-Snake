@@ -5,5 +5,4 @@ The snake consists of a 9 and 1s, with the 9 representing the head. Since this g
 
 Moving requires typing out the direction you want to go (left, right, up or down). Enter Q to quit.
 
-Current known bugs:
-* At bigger lengths, an apple is not guaranteed to spawn, practically softlocking the game.
+Reach me on discord @axel_silter if you have questions.
