@@ -1,4 +1,4 @@
-# PythonSlowSnakeGame
+# Turn-Based Snake
 Turn-based snake with text based commands written in python.
 
 The snake consists of a series of 1s, with a 9 indicating the head. The 0s show empty squares. Food is displayed as a 2. 
